@@ -4,11 +4,14 @@
 		<title>AZGS Leaflet App</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="style/leaflet.css" />
+		<link rel="stylesheet" type="text/css" href="style/flick/jquery-ui-1.8.19.custom.css" />
+		<link rel="stylesheet/less" type="text/css" href="style/aztimeline.less" />
 		<!--[if IE]>
 		<link rel="stylesheet" type="text/css" href="style/leaflet.ie.css" />
 		<![endif]-->
 		<script type="text/javascript" src="js/lib/leaflet-custom.js"></script>
 		<script type="text/javascript" src="js/lib/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/lib/jquery-ui-1.8.19.js"></script>
 		<script type="text/javascript" src="js/lib/less-1.2.2.min.js"></script>
 		<script type="text/javascript" src="js/lib/jade.js"></script>
 		<script type="text/javascript" src="js/lib/proj4js-1.0.3/lib/proj4js-compressed.js"></script>
@@ -25,6 +28,9 @@
 		<script type="text/javascript" src="js/Main.js"></script>
 	</head>
 	<body onload="init()">
-		<div id="map" style="height: 760px;"></div>		
+		<div id="map" style="height: 760px; width: 960px;"></div>
+		<div id="time-container" style="width: 920px;">
+			<div id="time-slider""></div>
+		</div>
 	</body>
 </html>

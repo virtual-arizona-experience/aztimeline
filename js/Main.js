@@ -1,33 +1,68 @@
+L.TileLayer.WMS.Filtered = L.TileLayer.WMS.extend({
+	initialize: function(serviceUrl, options) {
+		options = options || {};		
+		if (options.filter && options.filter instanceof DateFilter) {
+			filters = [];
+			for (var i = 0; i < options.layers.split(",").length; i++) {
+				filters.push(options.filter.cql);
+			}
+			options.cql_filter = filters.join(";");
+			delete options.filter;
+		}
+		
+		L.TileLayer.WMS.prototype.initialize.call(this, serviceUrl, options);
+	}
+});
+
 function init(){
-	var map = new L.Map("map");
+	var bounds = new L.LatLngBounds(new L.LatLng(21.4531, -128.6279), new L.LatLng(43.7076, -95.9326));
+	var map = new L.Map("map", {minZoom: 7, maxZoom: 10, maxBounds: bounds});
 	
 	/* Tilestream Layer example: */
-	var historicUrl = "http://opengis.azexperience.org/tiles/v2/azHistoric1880/{z}/{x}/{y}.png",
-		historicLayer = new L.TileLayer(historicUrl, {maxZoom: 10}); 
+	var baseLayer = new L.TileLayer("http://opengis.azexperience.org/tiles/v2/timeline-base/{z}/{x}/{y}.png", {maxZoom: 10}); 
 	
-	/* ESRI tiled service example: */
-	var natGeoLayer = new L.TileLayer.ESRI("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
+	map.wmsUrl = "http://opengis.azexperience.org/geoserver/wms";
+	layers = [ 'vae:states', 'vae:aznationalparks', 'vae:azcounties', 'vae:azcountyseats', 'vae:azcapitols', 'vae:azhistoricline', 'vae:states' ];
+	styles = [ 'states', 'aznationalparks', 'azcounties', 'azcountyseats', 'azcapitols', 'azhistoriclines', 'arizona' ];
+	map.wmsOptions = { layers: layers.join(','), styles: styles.join(','), format: "image/png", transparent: true };
 	
-	/* Bing maps example: 
-	var bingLayer = new L.TileLayer.Bing(<<Bing Maps API Key>>, "Road"); */
-	
-	/* WMS layer example: */
-	var wmsUrl = "http://opengis.azexperience.org/geoserver/wms",
-		wmsLayer = new L.TileLayer.WMS(wmsUrl, { 
-			maxZoom: 10, 
-			layers: "vae:azhistoricmines", 
-			format: "image/png", 
-			transparent: true 
-		}); 
-	
-	/* WFS GeoJSON layer example: */
-	var wfsLayer = new L.GeoJSON.WFS("http://opengis.azexperience.org/geoserver/wfs", "vae:azhistoricmines", {
-		pointToLayer: function(latlng) { return new L.CircleMarker(latlng); },
+	map.wfsUrl = 'http://opengis.azexperience.org/geoserver/wfs';
+	map.wfsFeature = 'vae:azhistoriccentennial';
+	map.wfsOptions = {
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(35, 35), }) }); },
 		popupObj: new JadeContent("templates/example.jade"),
 		popupOptions: { maxWidth: 530, centered: false },
 		hoverFld: "name"
-	}); 
+	};
+	
+	setupTimeSlider(map);
 	
 	var center = new L.LatLng(34.1618, -111.53332);
-	map.setView(center, 7).addLayer(natGeoLayer);
+	map.setView(center, 7).addLayer(baseLayer);
+}
+
+function setupTimeSlider(map) {
+	var startDate = new Date(["01", "01", "1775", "00:00:00"].join(" "));
+	$("#time-slider").slider({
+		range: 'min',
+		min: 1775,
+		max: 2012,
+		step: 5,
+		stop: function(event, ui) {
+			endDate = new Date(["01", "01", ui.value, "00:00:00"].join(" "));
+			theFilter = new DateFilter("timedate", startDate, endDate);			
+			$('.year-indicator').addClass('current-year');
+			if (map.wmsLayer) { map.removeLayer(map.wmsLayer); }
+			if (map.wfsLayer) { map.removeLayer(map.wfsLayer); }
+			map.wmsLayer = wmsLayer = new L.TileLayer.WMS.Filtered(map.wmsUrl, L.Util.extend(map.wmsOptions, { filter: theFilter }));
+			map.wfsLayer = wfsLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsFeature, L.Util.extend(map.wfsOptions, { filter: theFilter }));
+			map.addLayer(wmsLayer).addLayer(wfsLayer);
+		},
+		slide: function(event, ui) {
+			$('.year-indicator').remove();
+			$('a.ui-slider-handle').append("<div class='year-indicator'>" + ui.value + "</div>");					
+		}
+	});
+	
+	$('a.ui-slider-handle').append("<div class='year-indicator'>1775</div>");
 }
