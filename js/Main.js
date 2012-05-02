@@ -42,14 +42,14 @@ function init(){
 }
 
 function setupTimeSlider(map) {
-	var startDate = new Date(["12", "31", "1774", "00:00:00"].join(" "));
+	var startDate = new Date(1774, 12, 31, 00, 00, 00, 00);
 	$("#time-slider").slider({
 		range: 'min',
 		min: 1775,
 		max: 2012,
 		step: 5,
 		stop: function(event, ui) {
-			endDate = new Date(["01", "01", ui.value, "00:00:00"].join(" "));
+			endDate = new Date(ui.value, 01, 01, 00, 00, 00, 00);
 			theFilter = new DateFilter("timedate", startDate, endDate);
 			
 			//$('.year-indicator').addClass('current-year');
