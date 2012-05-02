@@ -4,6 +4,17 @@
 }
 
 @slider-top: -40px;
+@azblue: #003366;
+
+.custom-control-hover-label {
+  background-color: white;
+  font: 11px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: @azblue;
+  font-weight: bold;
+  padding: 3px 5px;
+  border: 5px solid lighten(@azblue, 5%);
+  border-radius: 5px;
+}
 
 #time-container {
   position: relative;
@@ -17,11 +28,23 @@
 }
 
 div.year-indicator {
-  .headings(#555);
+  .headings(@azblue, 70%);
   position: relative;
-  background-color: none;
   left: -7px;
   top: -20px;
   font-size: 16px;
   font-weight: bold;
+}
+
+#popup-content {
+  h3 { border-bottom: 2px solid black; }
+  #media-container {
+    padding-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    #media-content {
+      padding-top: 10px; 
+      img { height: 200px; }   
+    }
+  }
 }

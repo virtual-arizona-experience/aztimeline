@@ -29,9 +29,9 @@ function init(){
 	map.wfsUrl = 'http://opengis.azexperience.org/geoserver/wfs';
 	map.wfsFeature = 'vae:azhistoriccentennial';
 	map.wfsOptions = {
-		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(35, 35), }) }); },
-		popupObj: new JadeContent("templates/example.jade"),
-		popupOptions: { maxWidth: 530, centered: false },
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(25, 25), }) }); },
+		popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
+		popupOptions: { maxWidth: 300, centered: true },
 		hoverFld: "name"
 	};
 	
@@ -42,7 +42,7 @@ function init(){
 }
 
 function setupTimeSlider(map) {
-	var startDate = new Date(["01", "01", "1775", "00:00:00"].join(" "));
+	var startDate = new Date(["12", "31", "1774", "00:00:00"].join(" "));
 	$("#time-slider").slider({
 		range: 'min',
 		min: 1775,
@@ -50,8 +50,10 @@ function setupTimeSlider(map) {
 		step: 5,
 		stop: function(event, ui) {
 			endDate = new Date(["01", "01", ui.value, "00:00:00"].join(" "));
-			theFilter = new DateFilter("timedate", startDate, endDate);			
-			$('.year-indicator').addClass('current-year');
+			theFilter = new DateFilter("timedate", startDate, endDate);
+			
+			//$('.year-indicator').addClass('current-year');
+			
 			if (map.wmsLayer) { map.removeLayer(map.wmsLayer); }
 			if (map.wfsLayer) { map.removeLayer(map.wfsLayer); }
 			map.wmsLayer = wmsLayer = new L.TileLayer.WMS.Filtered(map.wmsUrl, L.Util.extend(map.wmsOptions, { filter: theFilter }));

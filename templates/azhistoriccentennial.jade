@@ -1,0 +1,8 @@
+#popup-content
+	h3#popup-title= displaydate
+	#description-container!= description
+	if mediadescription
+		#media-container
+			#media-description= mediadescription
+			#media-content
+				img(src= media)
