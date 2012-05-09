@@ -22,18 +22,29 @@ function init(){
 	var baseLayer = new L.TileLayer("http://opengis.azexperience.org/tiles/v2/timeline-base/{z}/{x}/{y}.png", {maxZoom: 10}); 
 	
 	map.wmsUrl = "http://opengis.azexperience.org/geoserver/wms";
-	layers = [ 'vae:states', 'vae:aznationalparks', 'vae:azcounties', 'vae:azcountyseats', 'vae:azcapitols', 'vae:azhistoricline', 'vae:states' ];
-	styles = [ 'states', 'aznationalparks', 'azcounties', 'azcountyseats', 'azcapitols', 'azhistoriclines', 'arizona' ];
+	layers = [ 'vae:states', 'vae:aznationalparks', 'vae:azcounties', 'vae:azcapitols', 'vae:azhistoricline', 'vae:states' ];
+	styles = [ 'states', 'aznationalparks', 'azcounties', 'azcapitols', 'azhistoriclines', 'arizona' ];
 	map.wmsOptions = { layers: layers.join(','), styles: styles.join(','), format: "image/png", transparent: true };
 	
 	map.wfsUrl = 'http://opengis.azexperience.org/geoserver/wfs';
-	map.wfsFeature = 'vae:azhistoriccentennial';
-	map.wfsOptions = {
+	
+	map.wfsCentennial = 'vae:azhistoriccentennial';
+	map.wfsCentennialOptions = {
 		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(25, 25), }) }); },
 		popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
 		popupOptions: { maxWidth: 300, centered: true },
 		hoverFld: "name"
 	};
+	
+	///County seats label wfs layer 
+	map.wfsCountylabel = 'vae:azcountylabels';
+	map.wfsCountylabelOptions = {
+			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(70, 50), }) }); },
+			popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
+			popupOptions: { maxWidth: 300, centered: true },
+			hoverFld: "name"
+		};	
+	///
 	
 	setupTimeSlider(map);
 	
@@ -55,10 +66,15 @@ function setupTimeSlider(map) {
 			//$('.year-indicator').addClass('current-year');
 			
 			if (map.wmsLayer) { map.removeLayer(map.wmsLayer); }
-			if (map.wfsLayer) { map.removeLayer(map.wfsLayer); }
+			if (map.wfsCentennialLayer) { map.removeLayer(map.wfsCentennialLayer); }
+			if (map.wfsCountylabelLayer) { map.removeLayer(map.wfsCountylabelLayer); }
+			
 			map.wmsLayer = wmsLayer = new L.TileLayer.WMS.Filtered(map.wmsUrl, L.Util.extend(map.wmsOptions, { filter: theFilter }));
-			map.wfsLayer = wfsLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsFeature, L.Util.extend(map.wfsOptions, { filter: theFilter }));
-			map.addLayer(wmsLayer).addLayer(wfsLayer);
+			map.wfsCentennialLayer = wfsCentennialLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCentennial, L.Util.extend(map.wfsCentennialOptions, { filter: theFilter }));
+			
+			///Add county seats wfs layer
+			map.wfsCountylabelLayer = wfsCountylabelLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountylabel, L.Util.extend(map.wfsCountylabelOptions, { filter: theFilter }));
+			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer);
 		},
 		slide: function(event, ui) {
 			$('.year-indicator').remove();

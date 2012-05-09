@@ -8,6 +8,14 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		if (options.filter && options.filter instanceof DateFilter) { this.getFeatureUrl += "&CQL_FILTER=" + options.filter.cql; }
 		
 		this.on("featureparse", function(e) {
+			
+			///Set the icon for each county seat
+			if(e.layer.options.icon.options.iconUrl == ""){
+				var iconBaseurl = "style/images/county-labels/";
+				e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+			}
+
+			
 			if (e.geometryType != 'Point' && e.geometryType != 'MultiPoint') {
 				if (options.style) {
 					e.layer._originalStyle = options.style;
@@ -69,6 +77,11 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 			success: function(response) {
 				if (response.type && response.type == "FeatureCollection") {
 					that.jsonData = response;
+					
+					var inputCrs = that.jsonData.crs.type + ":" + that.jsonData.crs.properties.code;
+					if(inputCrs == "EPSG:4326"){
+						that.options.inputCrs = inputCrs;
+					}					
 					that.toGeographicCoords(that.options.inputCrs || "EPSG:900913");
 					callback();
 				}				
@@ -77,13 +90,21 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		});
 	},
 	
-	toGeographicCoords: function() {
+	toGeographicCoords: function(inputCrs) {
 		function projectPoint(coordinates /* [x,y] */, inputCrs) {
 			var source = new Proj4js.Proj(inputCrs || "EPSG:900913"),
-				dest = new Proj4js.Proj("EPSG:4326"),
-				x = coordinates[0], 
-				y = coordinates[1],
-				p = new Proj4js.Point(x,y);
+				dest = new Proj4js.Proj("EPSG:4326");
+			
+			///Identify which coordinate is for latitude or longitude
+			if(Math.abs(coordinates[0]) > 90){
+				var x = coordinates[0], 
+				y = coordinates[1];				
+			}else{
+				var x = coordinates[1], 
+				y = coordinates[0];				
+			}
+
+			p = new Proj4js.Point(x,y);
 			Proj4js.transform(source, dest, p);
 			return [p.x, p.y];
 		}
@@ -92,12 +113,12 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		for (var f = 0; f < features.length; f++) {
 			switch (features[f].geometry.type) {
 				case "Point":
-					projectedCoords = projectPoint(features[f].geometry.coordinates);
+					projectedCoords = projectPoint(features[f].geometry.coordinates, inputCrs);
 					features[f].geometry.coordinates = projectedCoords;
 					break;
 				case "MultiPoint":
 					for (var p = 0; p < features[f].geometry.coordinates.length; p++) {
-						projectedCoords = projectPoint(features[f].geometry.coordinates[p]);
+						projectedCoords = projectPoint(features[f].geometry.coordinates[p], inputCrs);
 						features[f].geometry.coordinates[p] = projectedCoords;
 					}
 					break;
