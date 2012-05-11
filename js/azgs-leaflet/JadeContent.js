@@ -12,7 +12,9 @@ JadeContent = L.Class.extend({
 		$.ajax({
 			url: templateUrl,
 			async: false,
-			success: function(result) { that.jadeFn = jade.compile(result); }
+			success: function(result) { 
+				that.jadeFn = jade.compile(result); 
+			}
 		});
 	},
 	

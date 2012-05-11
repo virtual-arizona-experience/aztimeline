@@ -39,11 +39,11 @@ function init(){
 	///County seats label wfs layer 
 	map.wfsCountylabel = 'vae:azcountylabels';
 	map.wfsCountylabelOptions = {
-			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(70, 50), }) }); },
-			popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
-			popupOptions: { maxWidth: 300, centered: true },
-			hoverFld: "name"
-		};	
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "", iconSize: new L.Point(70, 15), }) }); },
+		popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
+		popupOptions: { maxWidth: 300, centered: true }
+		//hoverFld: "name"
+	};	
 	///
 	
 	setupTimeSlider(map);
@@ -74,7 +74,7 @@ function setupTimeSlider(map) {
 			
 			///Add county seats wfs layer
 			map.wfsCountylabelLayer = wfsCountylabelLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountylabel, L.Util.extend(map.wfsCountylabelOptions, { filter: theFilter }));
-			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer);
+			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsCentennialLayer);
 		},
 		slide: function(event, ui) {
 			$('.year-indicator').remove();
