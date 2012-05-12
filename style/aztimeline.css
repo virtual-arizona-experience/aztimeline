@@ -1,0 +1,64 @@
+.custom-control-hover-label {
+	color: white;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Glow(Strength=2, Color=#003366)";
+	text-shadow: -2px -2px 2px #036, 2px 2px 2px #036;
+}
+
+
+/* Define popup style*/
+.leaflet-popup-content-wrapper {
+	background-color: #036;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Glow(Strength=2, Color=#FFFFFF)";
+	box-shadow: -2px -2px 2px white, 2px 2px 2px white;
+}
+
+.leaflet-popup-close-button {
+	background-color: transparent;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;	
+}
+
+.leaflet-popup-content {
+	margin: 12px;
+	color: white;
+}
+
+#popup-title {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: white;
+}
+
+#media-content img{
+	max-width: 301px !important;
+}
+
+.year-indicator {
+	 position: relative;
+	 left: -7px;
+	 top: -20px;
+	 font-size: 16px;
+	 font-weight: bold;
+	 color: #003E7E;
+}
+
+#time-slider .ui-state-default {
+	color: transparent !important;
+	background: url("images/ui-bg_highlight-soft_100_f6f6f6_1x100.png") repeat-x scroll 50% 50% #F6F6F6 !important;
+	border-width: 2px;
+	border-color: #F6F6F6 !important;
+}
+
+#time-slider .ui-state-hover {
+	color: transparent !important;
+	cursor: pointer;
+	background: url("images/ui-bg_highlight-soft_25_0073ea_1x100.png") repeat-x scroll 50% 50% #003E7E !important;
+	border-color: #003E7E !important;
+}
+
+#time-container {
+	position: relative;
+	top: -40px;
+	left: 20px;
+	z-index: 1000;
+}

@@ -40,7 +40,7 @@ function init(){
 	map.wfsCountylabel = 'vae:azcountylabels';
 	map.wfsCountylabelOptions = {
 		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "", iconSize: new L.Point(70, 15), }) }); },
-		popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
+		popupObj: new JadeContent("templates/azcountylabels.jade"),
 		popupOptions: { maxWidth: 300, centered: true }
 		//hoverFld: "name"
 	};	
