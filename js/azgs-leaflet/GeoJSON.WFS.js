@@ -9,12 +9,17 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		
 		this.on("featureparse", function(e) {
 			
-			///Set the icon for each county seat
-			if(e.layer.options.icon.options.iconUrl == ""){
+			///Set county labels
+			if(e.layer.options.icon.options.iconUrl == "countylabel"){
 				var iconBaseurl = "style/images/county-labels/";
 				e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
 			}
-
+			///Set county seat labels
+			if(e.layer.options.icon.options.iconUrl == "countyseatlabel"){
+				var iconBaseurl = "style/images/countyseat-labels/";
+				e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+			}			
+			///
 			
 			if (e.geometryType != 'Point' && e.geometryType != 'MultiPoint') {
 				if (options.style) {
