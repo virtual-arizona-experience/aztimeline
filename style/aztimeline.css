@@ -24,13 +24,11 @@
 	color: white;
 }
 
-#popup-title {
+.popup-title {
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 	color: white;
-}
-
-#media-content img{
-	max-width: 301px !important;
+	margin-top: 14px;
+	margin-bottom: 14px;
 }
 
 .year-indicator {
@@ -44,7 +42,7 @@
 
 #time-slider .ui-state-default {
 	color: transparent !important;
-	background: url("images/ui-bg_highlight-soft_100_f6f6f6_1x100.png") repeat-x scroll 50% 50% #F6F6F6 !important;
+	background: url("flick/images/ui-bg_highlight-soft_100_f6f6f6_1x100.png") repeat-x scroll 50% 50% #F6F6F6 !important;
 	border-width: 2px;
 	border-color: #F6F6F6 !important;
 }
@@ -52,7 +50,7 @@
 #time-slider .ui-state-hover {
 	color: transparent !important;
 	cursor: pointer;
-	background: url("images/ui-bg_highlight-soft_25_0073ea_1x100.png") repeat-x scroll 50% 50% #003E7E !important;
+	background: url("flick/images/ui-bg_highlight-soft_25_0073ea_1x100.png") repeat-x scroll 50% 50% #003E7E !important;
 	border-color: #003E7E !important;
 }
 

@@ -47,7 +47,7 @@ function init(){
 	map.wfsCountyseat = 'vae:azcountyseats';
 	map.wfsCountyseatOptions = {
 			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azseat.png", iconSize: new L.Point(10, 10), }) }); },
-			popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
+			popupObj: new JadeContent("templates/azcountyseats.jade"),
 			popupOptions: { maxWidth: 300, centered: true }
 	};
 	

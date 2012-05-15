@@ -1,8 +1,8 @@
-#popup-content
-	h3#popup-title= displaydate
-	#description-container!= description
+#azhistoriccentennial-popup-content(style="width:300px;")
+	h3.popup-title(style="color:white; font-weight:bold;")= displaydate
+	.description-container!= description
 	if mediadescription
-		#media-container
-			#media-content
-				img(src= media)
-				#media-description= mediadescription
+		.media-container
+			.media-content
+				img(src= media, style="width:300px; height:auto;")
+				.media-description= mediadescription

@@ -22,6 +22,7 @@ L.Popup.Centered = L.Popup.extend({
 		this._containerLeft = pos.x - Math.round(this._containerWidth / 2) + this.options.offset.x;
 		
 		this._container.style.top = this._containerTop + 'px';
-		this._container.style.left = this._containerLeft + 'px';
+		this._container.style.left = this._containerLeft + 'px';			
+
 	}
 });
