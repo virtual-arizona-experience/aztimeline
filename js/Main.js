@@ -14,9 +14,10 @@ L.TileLayer.WMS.Filtered = L.TileLayer.WMS.extend({
 	}
 });
 
+var map;
 function init(){
 	var bounds = new L.LatLngBounds(new L.LatLng(21.4531, -128.6279), new L.LatLng(43.7076, -95.9326));
-	var map = new L.Map("map", {minZoom: 7, maxZoom: 10, maxBounds: bounds});
+	map = new L.Map("map", {minZoom: 7, maxZoom: 10, maxBounds: bounds});
 	
 	/* Tilestream Layer example: */
 	var baseLayer = new L.TileLayer("http://opengis.azexperience.org/tiles/v2/timeline-base/{z}/{x}/{y}.png", {maxZoom: 10}); 
@@ -91,11 +92,9 @@ function setupTimeSlider(map) {
 			map.wfsCountyseatLayer = wfsCountyseatLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountyseat, L.Util.extend(map.wfsCountyseatOptions, { filter: theFilter }));
 			map.wfsCountyseatlabelLayer = wfsCountyseatlabelLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountyseatlabel, L.Util.extend(map.wfsCountyseatlabelOptions, { filter: theFilter }));
 			
-			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer);
+			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
 			
-			setTimeout(function(){map.addLayer(wfsCountyseatlabelLayer);}, 1000);
-			setTimeout(function(){map.addLayer(wfsCountyseatLayer);}, 1000);
-			setTimeout(function(){map.addLayer(wfsCentennialLayer);}, 1000);
+			setTimeout(cssChange, 1500); 
 		},
 		slide: function(event, ui) {
 			$('.year-indicator').remove();
@@ -104,4 +103,16 @@ function setupTimeSlider(map) {
 	});
 	
 	$('a.ui-slider-handle').append("<div class='year-indicator'>1775</div>");
+}
+
+function cssChange(){
+	///Resolve features' overlay issue
+	$('img[src*="azflag.png"]').css("z-index", "1000");
+	$('img[src*="azseat.png"]').css("z-index", "500");
+	$('img[src*="countyseat-labels"]').css("z-index", "300");
+	
+	///Disable cursor change for labels
+	$('img[src*="county-labels"]').css("cursor", "default");
+	$('img[src*="countyseat-labels"]').css("cursor", "default");
+	$('img[src*="county-labels"]').css("z-index", "200");
 }
