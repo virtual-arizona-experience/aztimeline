@@ -34,13 +34,15 @@ function init(){
 		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azflag.png", iconSize: new L.Point(25, 25), }) }); },
 		popupObj: new JadeContent("templates/azhistoriccentennial.jade"),
 		popupOptions: { maxWidth: 300, centered: true },
-		hoverFld: "name"
+		hoverFld: "name",
+		zIndexOffset: 1000 ///This property is only working with point features
 	};
 	
 	///County label wfs layer 
 	map.wfsCountylabel = 'vae:azcountylabels';
 	map.wfsCountylabelOptions = {
-		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countylabel", iconSize: new L.Point(70, 15), }), clickable: false }); }
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countylabel", iconSize: new L.Point(70, 15), }), clickable: false }); },
+		zIndexOffset: -1000
 	};	
 	
 	///County seats layer
@@ -48,13 +50,15 @@ function init(){
 	map.wfsCountyseatOptions = {
 			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/azseat.png", iconSize: new L.Point(10, 10), }) }); },
 			popupObj: new JadeContent("templates/azcountyseats.jade"),
-			popupOptions: { maxWidth: 300, centered: true }
+			popupOptions: { maxWidth: 300, centered: true },
+			zIndexOffset: 500
 	};
 	
 	///County seat labels layer
 	map.wfsCountyseatlabel = 'vae:azcountyseats';
 	map.wfsCountyseatlabelOptions = {
-			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30)}), clickable: false }); }
+			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30)}), clickable: false }); },
+			zIndexOffset: -500
 	};
 	
 	///Historic lines layer
@@ -106,6 +110,7 @@ function setupTimeSlider(map) {
 			map.wfsHistoriclineLayer = wfsHistoriclineLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsHistoricline, L.Util.extend(map.wfsHistoriclineOptions, { filter: theFilter }));
 			
 			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsHistoriclineLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
+			//map.addLayer(wfsHistoriclineLayer);
 			
 			setTimeout(cssChange, 1500); 
 		},
@@ -120,8 +125,8 @@ function setupTimeSlider(map) {
 
 function cssChange(){
 	///Resolve features' overlay issue
-	$('img[src*="azflag.png"]').css("z-index", "1000");
-	$('img[src*="azseat.png"]').css("z-index", "500");
-	$('img[src*="countyseat-labels"]').css("z-index", "300");
-	$('img[src*="county-labels"]').css("z-index", "200");
+	//$('img[src*="azflag.png"]').css("z-index", "1000");
+	//$('img[src*="azseat.png"]').css("z-index", "500");
+	//$('img[src*="countyseat-labels"]').css("z-index", "300");
+	//$('img[src*="county-labels"]').css("z-index", "200");
 }

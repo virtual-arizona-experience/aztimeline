@@ -36,6 +36,13 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 					e.layer.setStyle(style);
 				}
 			}
+			
+			///Set the z-index offset value for the point feature
+			if (options.hasOwnProperty("zIndexOffset")){
+				e.layer.setZIndexOffset(options.zIndexOffset);
+			}
+			///
+			
 			if (options.popupObj && options.popupOptions) {
 				e.layer.on("click", function(evt) {
 					e.layer._map.openPopup(options.popupObj.generatePopup(e, options.popupOptions));
