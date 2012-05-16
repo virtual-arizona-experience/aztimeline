@@ -61,6 +61,8 @@ function init(){
 	map.wfsHistoricline = 'vae:azhistoricline';
 	map.wfsHistoriclineOptions = {
 			style: {color: 'red', opacity: 0},
+			popupObj: new JadeContent("templates/azhistoricline.jade"),
+			popupOptions: { maxWidth: 300, centered: true },
 			hoverFld: "name"
 	};	
 	///
