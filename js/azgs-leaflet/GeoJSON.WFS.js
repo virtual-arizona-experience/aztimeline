@@ -27,7 +27,7 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 			if (e.geometryType != 'Point' && e.geometryType != 'MultiPoint') {
 				if (options.style) {
 					e.layer._originalStyle = options.style;
-					e.layer.setStyle(options.style);
+					e.layer.setStyle(options.style); ///Set the style for non-point symbols
 				} else if (options.filteredStyles) {
 					var fld = options.filteredStyles.propName;
 					var itemVal = e.properties[fld];

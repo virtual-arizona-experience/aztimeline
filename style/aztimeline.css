@@ -60,3 +60,7 @@
 	left: 20px;
 	z-index: 1000;
 }
+
+path.leaflet-clickable {
+	opacity: 0;
+}
