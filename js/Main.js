@@ -40,7 +40,7 @@ function init(){
 	///County label wfs layer 
 	map.wfsCountylabel = 'vae:azcountylabels';
 	map.wfsCountylabelOptions = {
-		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countylabel", iconSize: new L.Point(70, 15), }) }); }
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countylabel", iconSize: new L.Point(70, 15), }), clickable: false }); }
 	};	
 	
 	///County seats layer
@@ -54,7 +54,7 @@ function init(){
 	///County seat labels layer
 	map.wfsCountyseatlabel = 'vae:azcountyseats';
 	map.wfsCountyseatlabelOptions = {
-			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30), }) }); }
+			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30)}), clickable: false }); }
 	};
 	
 	///Historic lines layer
@@ -123,9 +123,5 @@ function cssChange(){
 	$('img[src*="azflag.png"]').css("z-index", "1000");
 	$('img[src*="azseat.png"]').css("z-index", "500");
 	$('img[src*="countyseat-labels"]').css("z-index", "300");
-	
-	///Disable cursor change for labels
-	$('img[src*="county-labels"]').css("cursor", "default");
-	$('img[src*="countyseat-labels"]').css("cursor", "default");
 	$('img[src*="county-labels"]').css("z-index", "200");
 }
