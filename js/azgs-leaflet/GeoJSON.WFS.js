@@ -9,17 +9,20 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		
 		this.on("featureparse", function(e) {
 			
-			///Set county labels
-			if(e.layer.options.icon.options.iconUrl == "countylabel"){
-				var iconBaseurl = "style/images/county-labels/";
-				e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
-			}
-			///Set county seat labels
-			if(e.layer.options.icon.options.iconUrl == "countyseatlabel"){
-				var iconBaseurl = "style/images/countyseat-labels/";
-				e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+			if(e.layer.hasOwnProperty("options")){
+				///Set county labels
+				if(e.layer.options.icon.options.iconUrl == "countylabel"){
+					var iconBaseurl = "style/images/county-labels/";
+					e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+				}
+				///Set county seat labels
+				if(e.layer.options.icon.options.iconUrl == "countyseatlabel"){
+					var iconBaseurl = "style/images/countyseat-labels/";
+					e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+				}			
+				///				
 			}			
-			///
+
 			
 			if (e.geometryType != 'Point' && e.geometryType != 'MultiPoint') {
 				if (options.style) {
@@ -45,7 +48,12 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 			if (options.hoverObj || options.hoverFld) {
 				e.layer.on("mouseover", function(evt) {
 					hoverContent = options.hoverObj ? options.hoverObj.generateContent(e) : e.properties[options.hoverFld] || "Invalid field name" ;
-					hoverPoint = e.layer._map.latLngToContainerPoint(evt.target._latlng);
+					if(evt.target.hasOwnProperty("_latlng")){
+						hoverPoint = e.layer._map.latLngToContainerPoint(evt.target._latlng);
+					}else if(evt.hasOwnProperty("latlng")){
+						hoverPoint = e.layer._map.latLngToContainerPoint(evt.latlng);
+					}
+					
 					e.layer._hoverControl = new L.Control.Hover(hoverPoint, hoverContent);
 					e.layer._map.addControl(e.layer._hoverControl);	
 				});
@@ -122,11 +130,19 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 					features[f].geometry.coordinates = projectedCoords;
 					break;
 				case "MultiPoint":
-					for (var p = 0; p < features[f].geometry.coordinates.length; p++) {
+					for (var p = 0; p < features[f].geometry.coordinates.length; p ++) {
 						projectedCoords = projectPoint(features[f].geometry.coordinates[p], inputCrs);
 						features[f].geometry.coordinates[p] = projectedCoords;
 					}
 					break;
+				case "MultiLineString":
+					for (var c = 0; c < features[f].geometry.coordinates.length; c ++) {
+						for (var cc = 0; cc < features[f].geometry.coordinates[c].length; cc ++) {
+							var pCoords = features[f].geometry.coordinates[c][cc];
+							projectedCoords = projectPoint(pCoords, inputCrs);
+							features[f].geometry.coordinates[c][cc] = projectedCoords;
+						}
+					}
 			}
 		}
 	}

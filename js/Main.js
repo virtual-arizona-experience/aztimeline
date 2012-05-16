@@ -56,6 +56,13 @@ function init(){
 	map.wfsCountyseatlabelOptions = {
 			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30), }) }); }
 	};
+	
+	///Historic lines layer
+	map.wfsHistoricline = 'vae:azhistoricline';
+	map.wfsHistoriclineOptions = {
+			style: {color: 'red', opacity: 0},
+			hoverFld: "name"
+	};	
 	///
 	setupTimeSlider(map);
 	
@@ -82,6 +89,7 @@ function setupTimeSlider(map) {
 			if (map.wfsCountylabelLayer) { map.removeLayer(map.wfsCountylabelLayer); }
 			if (map.wfsCountyseatLayer) { map.removeLayer(map.wfsCountyseatLayer); }
 			if (map.wfsCountyseatlabelLayer) { map.removeLayer(map.wfsCountyseatlabelLayer); }
+			if (map.wfsHistoriclineLayer) { map.removeLayer(map.wfsHistoriclineLayer); }
 			
 			map.wmsLayer = wmsLayer = new L.TileLayer.WMS.Filtered(map.wmsUrl, L.Util.extend(map.wmsOptions, { filter: theFilter }));
 			map.wfsCentennialLayer = wfsCentennialLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCentennial, L.Util.extend(map.wfsCentennialOptions, { filter: theFilter }));
@@ -90,9 +98,12 @@ function setupTimeSlider(map) {
 			map.wfsCountylabelLayer = wfsCountylabelLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountylabel, L.Util.extend(map.wfsCountylabelOptions, { filter: theFilter }));
 			///Add county seats wfs layer
 			map.wfsCountyseatLayer = wfsCountyseatLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountyseat, L.Util.extend(map.wfsCountyseatOptions, { filter: theFilter }));
+			///Add county seat labels layer
 			map.wfsCountyseatlabelLayer = wfsCountyseatlabelLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsCountyseatlabel, L.Util.extend(map.wfsCountyseatlabelOptions, { filter: theFilter }));
+			///Add historic lines layer
+			map.wfsHistoriclineLayer = wfsHistoriclineLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsHistoricline, L.Util.extend(map.wfsHistoriclineOptions, { filter: theFilter }));
 			
-			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
+			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsHistoriclineLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
 			
 			setTimeout(cssChange, 1500); 
 		},
