@@ -41,7 +41,10 @@ function init(){
 	///County label wfs layer 
 	map.wfsCountylabel = 'vae:azcountylabels';
 	map.wfsCountylabelOptions = {
-		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countylabel", iconSize: new L.Point(70, 15), }), clickable: false }); },
+		///The iconUrl might contain two parameters, with '?' in the beginning
+		///The first parameter is the name of the field used to be the icon name
+		///The second parameter is the extension of the icon -- icon format
+		pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/county-labels/?name?png", iconSize: new L.Point(70, 15), }), clickable: false }); },
 		zIndexOffset: -1000
 	};	
 	
@@ -57,7 +60,7 @@ function init(){
 	///County seat labels layer
 	map.wfsCountyseatlabel = 'vae:azcountyseats';
 	map.wfsCountyseatlabelOptions = {
-			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "countyseatlabel", iconSize: new L.Point(100, 30)}), clickable: false }); },
+			pointToLayer: function(latlng) { return new L.Marker(latlng, { icon: new L.Icon({ iconUrl: "style/images/countyseat-labels/?name?png", iconSize: new L.Point(100, 30)}), clickable: false }); },
 			zIndexOffset: -500
 	};
 	
@@ -110,7 +113,7 @@ function setupTimeSlider(map) {
 			map.wfsHistoriclineLayer = wfsHistoriclineLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsHistoricline, L.Util.extend(map.wfsHistoriclineOptions, { filter: theFilter }));
 			
 			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsHistoriclineLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
-			//map.addLayer(wfsCentennialLayer);
+			//map.addLayer(wfsCentennialLayer); 
 			
 			setTimeout(cssChange, 1500); 
 		},

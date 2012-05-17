@@ -9,18 +9,15 @@ L.GeoJSON.WFS = L.GeoJSON.extend({
 		
 		this.on("featureparse", function(e) {
 			
+			///Parse the icon url
 			if(e.layer.hasOwnProperty("options")){
-				///Set county labels
-				if(e.layer.options.icon.options.iconUrl == "countylabel"){
-					var iconBaseurl = "style/images/county-labels/";
-					e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
+				var iconUrl = e.layer.options.icon.options.iconUrl;
+				if(iconUrl.split("?").length == 3) { ///If the the iconUrl contains two parameters (with '?')
+					var iconBaseUrl = iconUrl.split("?")[0];
+					var imgName = e.properties[iconUrl.split("?")[1]].replace(/\s/g, "") + "." + iconUrl.split("?")[2];
+					e.layer.options.icon.options.iconUrl = iconBaseUrl + imgName;	
 				}
-				///Set county seat labels
-				if(e.layer.options.icon.options.iconUrl == "countyseatlabel"){
-					var iconBaseurl = "style/images/countyseat-labels/";
-					e.layer.options.icon.options.iconUrl = iconBaseurl + e.properties.name.replace(/\s/g, "") + ".png";				
-				}			
-				///				
+		
 			}			
 
 			
