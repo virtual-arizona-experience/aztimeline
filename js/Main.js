@@ -80,7 +80,7 @@ function init(){
 }
 
 function setupTimeSlider(map) {
-	var startDate = new Date(1774, 12, 31, 00, 00, 00, 00);
+	var startDate = new Date(1774, 11, 31, 00, 00, 00, 00);
 	$("#time-slider").slider({
 		range: 'min',
 		min: 1775,
@@ -113,9 +113,7 @@ function setupTimeSlider(map) {
 			map.wfsHistoriclineLayer = wfsHistoriclineLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsHistoricline, L.Util.extend(map.wfsHistoriclineOptions, { filter: theFilter }));
 			
 			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsHistoriclineLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
-			//map.addLayer(wfsCentennialLayer); 
 			
-			setTimeout(cssChange, 1500); 
 		},
 		slide: function(event, ui) {
 			$('.year-indicator').remove();
@@ -124,12 +122,4 @@ function setupTimeSlider(map) {
 	});
 	
 	$('a.ui-slider-handle').append("<div class='year-indicator'>1775</div>");
-}
-
-function cssChange(){
-	///Resolve features' overlay issue
-	//$('img[src*="azflag.png"]').css("z-index", "1000");
-	//$('img[src*="azseat.png"]').css("z-index", "500");
-	//$('img[src*="countyseat-labels"]').css("z-index", "300");
-	//$('img[src*="county-labels"]').css("z-index", "200");
 }
