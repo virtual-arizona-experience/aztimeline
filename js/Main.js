@@ -110,7 +110,7 @@ function setupTimeSlider(map) {
 			map.wfsHistoriclineLayer = wfsHistoriclineLayer = new L.GeoJSON.WFS(map.wfsUrl, map.wfsHistoricline, L.Util.extend(map.wfsHistoriclineOptions, { filter: theFilter }));
 			
 			map.addLayer(wmsLayer).addLayer(wfsCountylabelLayer).addLayer(wfsHistoriclineLayer).addLayer(wfsCountyseatlabelLayer).addLayer(wfsCountyseatLayer).addLayer(wfsCentennialLayer);
-			//map.addLayer(wfsHistoriclineLayer);
+			//map.addLayer(wfsCentennialLayer);
 			
 			setTimeout(cssChange, 1500); 
 		},

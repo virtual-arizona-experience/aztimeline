@@ -19,10 +19,18 @@ JadeContent = L.Class.extend({
 	},
 	
 	generateContent: function(feature) {
-		return this.jadeFn(feature.properties);
+		///Caclulate the height of the image
+		if(feature.properties.mediawidth && feature.properties.mediaheight){
+			var imgheight = 300 / feature.properties.mediawidth * feature.properties.mediaheight;
+			imgheight += "px";
+		}else{
+			var imgheight = "auto";
+		}		
+		
+		return this.jadeFn(L.Util.extend(feature.properties, {imgheight: imgheight}));
 	},
 	
-	generatePopup: function(feature, options) {		
+	generatePopup: function(feature, options) {
 		if (options.centered) { popup = new L.Popup.Centered(options); }
 		else { popup = new L.Popup(options); }
 		
