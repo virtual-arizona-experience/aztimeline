@@ -20,14 +20,14 @@ function init(){
 	map = new L.Map("map", {minZoom: 7, maxZoom: 10, maxBounds: bounds});
 	
 	/* Tilestream Layer example: */
-	var baseLayer = new L.TileLayer("http://opengis.azexperience.org/tiles/v2/timeline-base/{z}/{x}/{y}.png", {maxZoom: 10}); 
+	var baseLayer = new L.TileLayer("/tiles/v2/timeline-base/{z}/{x}/{y}.png", {maxZoom: 10}); 
 	
-	map.wmsUrl = "http://opengis.azexperience.org/geoserver/wms";
+	map.wmsUrl = "/geoserver/wms";
 	layers = [ 'vae:states', 'vae:aznationalparks', 'vae:azcounties', 'vae:azhistoricline', 'vae:states'];
 	styles = [ 'states', 'aznationalparks', 'azcounties', 'azhistoriclines', 'arizona'];
 	map.wmsOptions = { layers: layers.join(','), styles: styles.join(','), format: "image/png", transparent: true };
 	
-	map.wfsUrl = 'http://opengis.azexperience.org/geoserver/wfs';
+	map.wfsUrl = '/geoserver/wfs';
 	
 	map.wfsCentennial = 'vae:azhistoriccentennial';
 	map.wfsCentennialOptions = {
